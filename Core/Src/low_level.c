@@ -8,6 +8,7 @@ void initLowLevel (void)
     HAL_Init();
     init_rcc();
     init_gpio();
+    init_spi();
 }
 
 static void init_rcc (void)
@@ -15,12 +16,12 @@ static void init_rcc (void)
     RCC_OscInitTypeDef sRCC = {0};
     RCC_ClkInitTypeDef sCLK = {0};
 
-    sRCC.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    sRCC.HSEState = RCC_HSE_ON;
-    sRCC.HSEPredivValue = RCC_HSE_PREDIV_DIV2;
+    sRCC.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+    sRCC.HSEState = RCC_HSI_ON;
+    sRCC.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
     sRCC.HSIState = RCC_HSI_ON;
     sRCC.PLL.PLLState = RCC_PLL_ON;
-    sRCC.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+    sRCC.PLL.PLLSource = RCC_PLLSOURCE_HSI_DIV2;
     sRCC.PLL.PLLMUL = RCC_PLL_MUL9;
     if (HAL_RCC_OscConfig(&sRCC) != HAL_OK)
     {
