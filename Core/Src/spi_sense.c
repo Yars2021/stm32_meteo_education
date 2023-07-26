@@ -43,13 +43,8 @@ void init_spi(){
         HAL_SPI_TransmitReceive(&spi, out, str, 2, 1000);
         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
         uint16_t temp_data = (str[0]<<8)|str[1];
-        if(temp_data & 0x200){
-            temp_data >>=5;
-            temp = temp_data * 0.25;
-        } else {
-            temp_data >>=5;
-            temp =temp_data * 0.25;
-        }
+        temp_data >>=5;
+        temp =temp_data * 0.25;
     }
     HAL_Delay(1000);
 }
