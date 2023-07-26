@@ -7,8 +7,8 @@ void init_spi(){
     static SPI_HandleTypeDef spi = { .Instance = SPI2 };
     spi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
     spi.Init.Direction = SPI_DIRECTION_2LINES;
-    spi.Init.CLKPhase = SPI_PHASE_2EDGE;
-    spi.Init.CLKPolarity = SPI_POLARITY_HIGH;
+    spi.Init.CLKPhase = SPI_PHASE_1EDGE;
+    spi.Init.CLKPolarity = SPI_POLARITY_LOW;
     spi.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
     spi.Init.DataSize = SPI_DATASIZE_8BIT;
     spi.Init.FirstBit = SPI_FIRSTBIT_MSB;
@@ -27,7 +27,7 @@ void init_spi(){
     GPIO_InitStruct.Pin   = GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
     GPIO_InitStruct.Mode  = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull  = GPIO_NOPULL;
-    GPIO_InitStruct.Speed  = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Speed  = GPIO_SPEED_FREQ_HIGH;
 
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
