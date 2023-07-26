@@ -5,7 +5,7 @@ double temp = 0;
 void init_spi(){
     __HAL_RCC_SPI2_CLK_ENABLE();
     static SPI_HandleTypeDef spi = { .Instance = SPI2 };
-    spi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+    spi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
     spi.Init.Direction = SPI_DIRECTION_2LINES;
     spi.Init.CLKPhase = SPI_PHASE_2EDGE;
     spi.Init.CLKPolarity = SPI_POLARITY_HIGH;
@@ -44,9 +44,11 @@ void init_spi(){
         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
         uint16_t temp_data = (str[0]<<8)|str[1];
         if(temp_data & 0x200){
-            temp = ( ~temp_data & 0x1FF ) * 0.25;
+            temp_data >>=5;
+            temp = temp_data * 0.25;
         } else {
-            temp = ( temp_data & 0x1FF ) * 0.25;
+            temp_data >>=5;
+            temp =temp_data * 0.25;
         }
     }
     HAL_Delay(1000);
