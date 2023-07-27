@@ -6,8 +6,8 @@ int main (void)
 {
     initLowLevel();
 
+
     while (1)
     {
-        
     }
 }

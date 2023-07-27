@@ -17,7 +17,7 @@ static void init_rcc (void)
     RCC_ClkInitTypeDef sCLK = {0};
 
     sRCC.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-    sRCC.HSEState = RCC_HSI_ON;
+    sRCC.HSEState = RCC_HSE_ON;
     sRCC.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
     sRCC.HSIState = RCC_HSI_ON;
     sRCC.PLL.PLLState = RCC_PLL_ON;
