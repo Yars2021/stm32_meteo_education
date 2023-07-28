@@ -8,6 +8,7 @@ void initLowLevel (void)
     HAL_Init();
     init_rcc();
     init_gpio();
+    init_trans();
 }
 
 static void init_rcc (void)
