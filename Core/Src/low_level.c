@@ -3,6 +3,8 @@
 static void init_rcc (void);
 static void init_gpio (void);
 
+SPI_HandleTypeDef spi_2;
+
 void initLowLevel (void)
 {
     HAL_Init();
@@ -58,4 +60,51 @@ static void init_gpio (void)
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_SET);
+}
+
+void init_spi(){
+    __HAL_RCC_SPI2_CLK_ENABLE();
+    spi_2.Instance = SPI2;
+    spi_2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+    spi_2.Init.Direction = SPI_DIRECTION_2LINES;
+    spi_2.Init.CLKPhase = SPI_PHASE_2EDGE;
+    spi_2.Init.CLKPolarity = SPI_POLARITY_HIGH;
+    spi_2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+    spi_2.Init.DataSize = SPI_DATASIZE_8BIT;
+    spi_2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+    spi_2.Init.NSS = SPI_NSS_SOFT;
+    spi_2.Init.TIMode = SPI_TIMODE_DISABLE;
+    spi_2.Init.Mode = SPI_MODE_MASTER; 
+    spi_2.Init.CRCPolynomial = 10;
+    if (HAL_SPI_Init(&spi_2) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    GPIO_InitTypeDef GPIO_InitStruct;
+
+    GPIO_InitStruct.Pin   = GPIO_PIN_13 | GPIO_PIN_15;
+    GPIO_InitStruct.Mode  = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull  = GPIO_NOPULL;
+    GPIO_InitStruct.Speed  = GPIO_SPEED_FREQ_HIGH;
+
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_14;
+    GPIO_InitStruct.Mode  = GPIO_MODE_INPUT;
+    pin_init(PIN_MISO_SPI2);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_12;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_11;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
+
+    HAL_Delay(2000);
 }

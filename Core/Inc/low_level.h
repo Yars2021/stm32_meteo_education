@@ -58,5 +58,6 @@ void initLowLevel (void);
 void switchToRx (void);
 void switchToTx (void);
 void set_pa_level (uint8_t percent);
+void init_spi(void);
 
 #endif /* _LOW_LEVEL_H_ */
