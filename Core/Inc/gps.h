@@ -1,8 +1,6 @@
 #ifndef _GPS_H_
 #define _GPS_H_
 
-#define UART2_TX_LENGTH 128
-#define UART2_RX_LENGTH 128
 #define GPS_RAW_DATA_SIZE 256
 
 typedef struct {
