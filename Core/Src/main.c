@@ -8,7 +8,7 @@ int main(void)
 {
     initLowLevel();
 
-    init_humidity(&humidity);
+    init_humidity(&humidity, GPIOA, GPIO_PIN_1);
     switch_to_hum_sensor(&humidity);
 
     while (1)

@@ -5,6 +5,8 @@
 #define HUM_PRESCALER 495
 
 typedef struct {
+    GPIO_TypeDef *GPIOx;
+    uint16_t GPIO_Pin;
     TIM_HandleTypeDef *main_timer;
     TIM_HandleTypeDef *high_lvl_timer;
     uint8_t PWM_signal_state; // 0 - low, 1 - high
@@ -12,7 +14,7 @@ typedef struct {
     float humidity;
 } humidity_sensor_t;
 
-void init_humidity(humidity_sensor_t *humidity_sensor);
+void init_humidity(humidity_sensor_t *humidity_sensor, GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
 void switch_to_hum_sensor(humidity_sensor_t *humidity_sensor);
 void get_humidity(humidity_sensor_t *humidity_sensor);
 
