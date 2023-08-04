@@ -69,6 +69,7 @@ set(GROUP_SOURCES_CORE
 		Core/Src/main.c
 		Core/Src/low_level.c
 		Core/Src/it.c
+		Core/Src/humidity.c
 		)
 
 set(GROUP_SOURCES_HAL_DRIVER
@@ -85,6 +86,7 @@ set(GROUP_SOURCES_HAL_DRIVER
 		Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c
 		Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c
 		Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
+		Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
 		)
 
 set(GROUP_SOURCES_UNILIB_INTERFACE

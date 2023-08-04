@@ -19,6 +19,7 @@
 #include "interface.h"
 #include "low_level.h"
 #include "var.h"
+#include "humidity.h"
 
 #define VERSION_MAJOR			1
 #define VERSION_MINOR			0

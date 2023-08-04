@@ -19,7 +19,8 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 void Error_Handler (void);
-
+void EXTI1_IRQHandler(void);
+void TIM2_IRQHandler(void);
 
 #ifdef __cplusplus
 }
