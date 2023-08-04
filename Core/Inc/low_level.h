@@ -48,6 +48,8 @@
 // PA Ramp
 #define PIN_PA_RAMP						A,11,L,ALT_OUTPUT_PUSH_PULL,SPEED_50MHZ
 
+#define PIN_MISO_SPI2                   B,14,H,INPUT_FLOATING,SPEED_50MHZ
+
 #define uart_debug						uart1
 #define uart_modem						uart3
 #define uart_ap3						uart1
