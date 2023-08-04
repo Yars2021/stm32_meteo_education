@@ -12,6 +12,6 @@ int main (void)
     while (1)
     {
         get_temp(&sen);
-s        HAL_Delay(1000);
+        HAL_Delay(1000);
     }
 }
