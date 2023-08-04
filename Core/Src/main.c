@@ -9,12 +9,16 @@ int main (void)
     initLowLevel();
 
     char * buf = "Hello";
+
+    transiver trans;
+
+    init_trans(&trans, 0);
+    trans.output = buf;
+    trans.output_size = sizeof(buf);
     
     while (1)
     {
-        begin_packet();
-		transmite(buf, sizeof(buf));
-		end_packet();
+        transmite(&trans);
         HAL_Delay(1000);
     }
 }

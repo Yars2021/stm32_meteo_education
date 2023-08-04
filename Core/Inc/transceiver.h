@@ -1,13 +1,16 @@
 #ifndef _TRANS_H_
 #define _TRANS_H_
 
-void init_trans(void);
-void transmite(uint8_t * buf, uint8_t size);
-uint8_t begin_packet();
-uint8_t end_packet();
-uint8_t read_reg(uint8_t addr);
-void write_reg(uint8_t addr, uint8_t cmd);
-void set_frequency(uint64_t freq);
+typedef struct{
+    char *input;
+    size_t input_size;
+    char *output;
+    size_t output_size;
+    SPI_HandleTypeDef *spi;
+}transiver;
+
+void init_trans(transiver *trans, size_t id);
+void transmite(transiver *trans);
 
 #define REG_FIFO                 0x00
 #define REG_OP_MODE              0x01
