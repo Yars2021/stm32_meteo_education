@@ -29,12 +29,14 @@ typedef struct {
 } GNSS_DataTypeDef;
 
 typedef struct {
-    UART_HandleTypeDef *huart;
+	struct {
+    	UART_HandleTypeDef *huart;
+	} Interface;
     uint8_t raw_data[GPS_RAW_DATA_SIZE];
     GNSS_DataTypeDef pvtdata;
 } gps_sensor_t;
 
-void init_gps(gps_sensor_t *gps_sensor);
+void init_gps(gps_sensor_t *gps_sensor, UART_HandleTypeDef *huart);
 HAL_StatusTypeDef get_pvtdata(gps_sensor_t *gps_sensor);
 
 static uint8_t configUBX[] = {0xB5,0x62,0x06,0x00,0x14,0x00,0x01,0x00,0x00,0x00,0xD0,0x08,0x00,0x00,0x80,0x25,0x00,0x00,0x01,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x9A,0x79};

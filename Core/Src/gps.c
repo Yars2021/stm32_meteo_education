@@ -1,12 +1,10 @@
 #include "include.h"
 
-extern UART_HandleTypeDef huart2;
-
-void init_gps(gps_sensor_t *gps_sensor)
+void init_gps(gps_sensor_t *gps_sensor, UART_HandleTypeDef *huart)
 {
     if (!gps_sensor) return;
 
-    gps_sensor->huart = &huart2;
+    gps_sensor->Interface.huart = huart;
 
     for (size_t i = 0; i < GPS_RAW_DATA_SIZE; i++)
         gps_sensor->raw_data[i] = 0;
@@ -51,8 +49,8 @@ HAL_StatusTypeDef get_pvtdata(gps_sensor_t *gps_sensor)
 
     HAL_StatusTypeDef hal_status = HAL_OK;
 
-    hal_status |= HAL_UART_Transmit(&huart2, getPVTData, sizeof(getPVTData), 1000);
-    HAL_UART_Receive(&huart2, gps_sensor->raw_data, 101, 1000);
+    hal_status |= HAL_UART_Transmit(gps_sensor->Interface.huart, getPVTData, sizeof(getPVTData), 1000);
+    HAL_UART_Receive(gps_sensor->Interface.huart, gps_sensor->raw_data, 101, 1000);
     HAL_Delay(1000);
 
     gps_sensor->pvtdata.yearBytes[0] = gps_sensor->raw_data[10];
