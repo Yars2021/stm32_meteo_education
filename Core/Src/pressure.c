@@ -1,12 +1,13 @@
 #include "include.h"
 
-extern SPI_HandleTypeDef spi_2;
-
-void init_pressure(pressure_sensor_t *pressure_sensor)
+void init_pressure(pressure_sensor_t *pressure_sensor, GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, SPI_HandleTypeDef *spi)
 {
     if (!pressure_sensor) return;
 
-    pressure_sensor->spi = &spi_2;
+    pressure_sensor->Interface.GPIOx = GPIOx;
+    pressure_sensor->Interface.GPIO_Pin = GPIO_Pin;
+    pressure_sensor->Interface.spi = spi;
+
     pressure_sensor->raw_data[0] = 0;
     pressure_sensor->raw_data[1] = 0;
     pressure_sensor->raw_data[2] = 0;
@@ -38,24 +39,24 @@ HAL_StatusTypeDef get_pressure(pressure_sensor_t *pressure_sensor)
             tx_l  = 0b10101001, 
             tx_xl = 0b10101000;
 
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
-    hal_status |= HAL_SPI_Transmit(pressure_sensor->spi, ctrl1, 2, 512);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(pressure_sensor->Interface.GPIOx, pressure_sensor->Interface.GPIO_Pin, GPIO_PIN_RESET);
+    hal_status |= HAL_SPI_Transmit(pressure_sensor->Interface.spi, ctrl1, 2, 512);
+    HAL_GPIO_WritePin(pressure_sensor->Interface.GPIOx, pressure_sensor->Interface.GPIO_Pin, GPIO_PIN_SET);
 
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
-    hal_status |= HAL_SPI_Transmit(pressure_sensor->spi, &tx_xl, 1, 512);
-    hal_status |= HAL_SPI_Receive(pressure_sensor->spi, pressure_sensor->raw_data + 2, 1, 512);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(pressure_sensor->Interface.GPIOx, pressure_sensor->Interface.GPIO_Pin, GPIO_PIN_RESET);
+    hal_status |= HAL_SPI_Transmit(pressure_sensor->Interface.spi, &tx_xl, 1, 512);
+    hal_status |= HAL_SPI_Receive(pressure_sensor->Interface.spi, pressure_sensor->raw_data + 2, 1, 512);
+    HAL_GPIO_WritePin(pressure_sensor->Interface.GPIOx, pressure_sensor->Interface.GPIO_Pin, GPIO_PIN_SET);
 
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
-    hal_status |= HAL_SPI_Transmit(pressure_sensor->spi, &tx_l, 1, 512);
-    hal_status |= HAL_SPI_Receive(pressure_sensor->spi, pressure_sensor->raw_data + 1, 1, 512);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(pressure_sensor->Interface.GPIOx, pressure_sensor->Interface.GPIO_Pin, GPIO_PIN_RESET);
+    hal_status |= HAL_SPI_Transmit(pressure_sensor->Interface.spi, &tx_l, 1, 512);
+    hal_status |= HAL_SPI_Receive(pressure_sensor->Interface.spi, pressure_sensor->raw_data + 1, 1, 512);
+    HAL_GPIO_WritePin(pressure_sensor->Interface.GPIOx, pressure_sensor->Interface.GPIO_Pin, GPIO_PIN_SET);
 
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
-    hal_status |= HAL_SPI_Transmit(pressure_sensor->spi, &tx_h, 1, 512);
-    hal_status |= HAL_SPI_Receive(pressure_sensor->spi, pressure_sensor->raw_data, 1, 512);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(pressure_sensor->Interface.GPIOx, pressure_sensor->Interface.GPIO_Pin, GPIO_PIN_RESET);
+    hal_status |= HAL_SPI_Transmit(pressure_sensor->Interface.spi, &tx_h, 1, 512);
+    hal_status |= HAL_SPI_Receive(pressure_sensor->Interface.spi, pressure_sensor->raw_data, 1, 512);
+    HAL_GPIO_WritePin(pressure_sensor->Interface.GPIOx, pressure_sensor->Interface.GPIO_Pin, GPIO_PIN_SET);
 
     pressure_sensor->pressure =    (pressure_sensor->raw_data[0] << 16 | 
                                     pressure_sensor->raw_data[1] << 8 | 
