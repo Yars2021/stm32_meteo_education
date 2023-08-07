@@ -1,12 +1,12 @@
 #include "include.h"
 
-extern spi_2;
-
-void init_temp(temputer_sensor *sen, size_t id){
+void init_temp(temputer_sensor *sen, GPIO_TypeDef *CS_GPIOx, uint16_t CS_GPIO_Pin, SPI_HandleTypeDef *spi){
     sen->raw_data[0] = 0;
     sen->raw_data[1] = 0;
     sen->temp = 0;
-    sen->spi = &spi_2;
+    sen->Interface.spi = &spi;
+    sen->Interface.CS_GPIO_Pin = CS_GPIO_Pin;
+    sen->Interface.CS_GPIOx = CS_GPIOx;
 }
 
 void get_temp(temputer_sensor *sen){
