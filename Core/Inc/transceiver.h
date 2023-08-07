@@ -6,10 +6,14 @@ typedef struct{
     size_t input_size;
     char *output;
     size_t output_size;
-    SPI_HandleTypeDef *spi;
+    struct {
+    GPIO_TypeDef *CS_PORT;
+    uint32_t CS_Pin;
+    SPI_TypeDef *SPI;
+    } Inteface;
 }transiver;
 
-void init_trans(transiver *trans, size_t id);
+void init_trans(transiver *trans, GPIO_TypeDef *CS_PORT, uint32_t CS_Pin,SPI_TypeDef *SPI);
 void transmite(transiver *trans);
 
 #define REG_FIFO                 0x00

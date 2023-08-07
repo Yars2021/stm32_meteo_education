@@ -7,9 +7,11 @@ uint8_t read_reg(uint8_t addr, transiver *trans);
 void write_reg(uint8_t addr, uint8_t cmd, transiver *trans);
 void set_frequency(uint64_t freq, transiver *trans);
 
-void init_trans(transiver *trans, size_t id){
+void init_trans(transiver *trans, GPIO_TypeDef *CS_PORT, uint32_t CS_Pin,SPI_TypeDef *SPI){
 
-  trans->spi = &spi_1;
+  trans->Inteface.SPI = SPI;
+  trans->Inteface.CS_Pin = CS_Pin;
+  trans->Inteface.CS_PORT = CS_PORT;
     
     uint8_t ret;
     ret = read_reg(REG_VERSION, trans);
@@ -30,24 +32,24 @@ void init_trans(transiver *trans, size_t id){
 uint8_t read_reg(uint8_t addr, transiver *trans) {
 	uint8_t txByte = addr & 0x7f;
 	uint8_t rxByte = 0x00;
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4,GPIO_PIN_RESET);
-	HAL_SPI_Transmit(trans->spi, &txByte, 1, 1000);
-	while (HAL_SPI_GetState(trans->spi) != HAL_SPI_STATE_READY);
+	HAL_GPIO_WritePin(trans->Inteface.CS_PORT, trans->Inteface.CS_Pin,GPIO_PIN_RESET);
+	HAL_SPI_Transmit(trans->Inteface.SPI, &txByte, 1, 1000);
+	while (HAL_SPI_GetState(trans->Inteface.SPI) != HAL_SPI_STATE_READY);
 	
-	HAL_SPI_Receive(trans->spi,&rxByte, 1, 1000);
-	while(HAL_SPI_GetState(trans->spi) != HAL_SPI_STATE_READY);
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4,GPIO_PIN_SET);
+	HAL_SPI_Receive(trans->Inteface.SPI,&rxByte, 1, 1000);
+	while(HAL_SPI_GetState(trans->Inteface.SPI) != HAL_SPI_STATE_READY);
+	HAL_GPIO_WritePin(trans->Inteface.CS_PORT, trans->Inteface.CS_Pin,GPIO_PIN_SET);
 	return rxByte;
 }
 
 void write_reg(uint8_t addr, uint8_t cmd, transiver *trans){
 	uint8_t add = addr | 0x80;
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4,GPIO_PIN_RESET);
-    HAL_SPI_Transmit(trans->spi, &add, 1, 1000);
-	while (HAL_SPI_GetState(trans->spi) != HAL_SPI_STATE_READY);
-	HAL_SPI_Transmit(trans->spi, &cmd, 1, 1000);
-	while (HAL_SPI_GetState(trans->spi) != HAL_SPI_STATE_READY);
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(trans->Inteface.CS_PORT, trans->Inteface.CS_Pin,GPIO_PIN_RESET);
+    HAL_SPI_Transmit(trans->Inteface.SPI, &add, 1, 1000);
+	while (HAL_SPI_GetState(trans->Inteface.SPI) != HAL_SPI_STATE_READY);
+	HAL_SPI_Transmit(trans->Inteface.SPI, &cmd, 1, 1000);
+	while (HAL_SPI_GetState(trans->Inteface.SPI) != HAL_SPI_STATE_READY);
+	HAL_GPIO_WritePin(trans->Inteface.CS_PORT, trans->Inteface.CS_Pin,GPIO_PIN_SET);
 }
 
 void set_frequency(uint64_t freq, transiver *trans){

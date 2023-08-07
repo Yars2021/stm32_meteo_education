@@ -2,6 +2,8 @@
 
 #include "include.h"
 
+extern SPI_HandleTypeDef spi_1;
+
 uint8_t message;
 
 int main (void)
@@ -12,7 +14,7 @@ int main (void)
 
     transiver trans;
 
-    init_trans(&trans, 0);
+    init_trans(&trans, GPIOA, GPIO_PIN_4, &spi_1);
     trans.output = buf;
     trans.output_size = sizeof(buf);
     
